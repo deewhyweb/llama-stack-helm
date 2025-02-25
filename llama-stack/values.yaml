@@ -71,3 +71,51 @@ startupProbe:
   initialDelaySeconds: 40
   periodSeconds: 10
   failureThreshold: 30
+
+playground:
+  enabled: true
+  backend:
+    url: "https://llama-stack-llama-stack.apps.rhsaia.vg6c.p1.openshiftapps.com"
+  replicaCount: 1
+  image:
+    repository: quay.io/jland/llama-stack-playground
+    tag: latest
+    # This sets the pull policy for images.
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 8501
+
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    annotations: {}
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 500Mi
+
+  # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 8501
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 8501
+  startupProbe:
+    httpGet:
+      path: /
+      port: 8501
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    failureThreshold: 16
