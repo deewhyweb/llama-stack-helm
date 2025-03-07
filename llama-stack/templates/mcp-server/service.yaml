@@ -1,0 +1,15 @@
+{{- with .Values.mcp }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mcp-server.fullname" $ }}
+spec:
+  type: {{ .service.type }}
+  ports:
+    - port: {{ .service.port }}
+      targetPort: http
+      protocol: TCP
+      name: mcp-server
+  selector:
+    {{- include "mcp-server.selectorLabels" $ | nindent 4 }}
+{{- end }}

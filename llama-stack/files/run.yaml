@@ -1,5 +1,5 @@
 version: '2'
-image_name: vllm-gpu
+image_name: remote-vllm
 apis:
 - agents
 - datasetio
@@ -12,16 +12,12 @@ apis:
 - vector_io
 providers:
   inference:
-  - provider_id: vllm
+  - provider_id: vllm-inference
     provider_type: remote::vllm
     config:
-      url: ${env.VLLM_URL:http://localhost:8000}
-      api_token: ${env.VLLM_API_TOKEN}
-      model: ${env.INFERENCE_MODEL:Llama3.2-3B-Instruct}
-      tensor_parallel_size: ${env.TENSOR_PARALLEL_SIZE:1}
-      max_tokens: ${env.MAX_TOKENS:4096}
-      enforce_eager: ${env.ENFORCE_EAGER:False}
-      gpu_memory_utilization: ${env.GPU_MEMORY_UTILIZATION:0.7}
+      url: ${env.VLLM_URL}
+      max_tokens: ${env.VLLM_MAX_TOKENS:4096}
+      api_token: ${env.VLLM_API_TOKEN:fake}
   - provider_id: sentence-transformers
     provider_type: inline::sentence-transformers
     config: {}
@@ -32,7 +28,7 @@ providers:
       kvstore:
         type: sqlite
         namespace: null
-        db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/vllm-gpu}/faiss_store.db
+        db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/faiss_store.db
   safety:
   - provider_id: llama-guard
     provider_type: inline::llama-guard
@@ -44,14 +40,7 @@ providers:
       persistence_store:
         type: sqlite
         namespace: null
-        db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/vllm-gpu}/agents_store.db
-  telemetry:
-  - provider_id: meta-reference
-    provider_type: inline::meta-reference
-    config:
-      service_name: ${env.OTEL_SERVICE_NAME:llama-stack}
-      sinks: ${env.TELEMETRY_SINKS:console,sqlite}
-      sqlite_db_path: ${env.SQLITE_DB_PATH:~/.llama/distributions/vllm-gpu/trace_store.db}
+        db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/agents_store.db
   eval:
   - provider_id: meta-reference
     provider_type: inline::meta-reference
@@ -74,6 +63,13 @@ providers:
     provider_type: inline::braintrust
     config:
       openai_api_key: ${env.OPENAI_API_KEY:}
+  telemetry:
+  - provider_id: meta-reference
+    provider_type: inline::meta-reference
+    config:
+      service_name: ${env.OTEL_SERVICE_NAME:llama-stack}
+      sinks: ${env.TELEMETRY_SINKS:console,sqlite}
+      sqlite_db_path: ${env.SQLITE_DB_PATH:~/.llama/distributions/remote-vllm/trace_store.db}
   tool_runtime:
   - provider_id: brave-search
     provider_type: remote::brave-search
@@ -96,11 +92,11 @@ providers:
     config: {}
 metadata_store:
   type: sqlite
-  db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/vllm-gpu}/registry.db
+  db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/registry.db
 models:
 - metadata: {}
   model_id: ${env.INFERENCE_MODEL}
-  provider_id: vllm
+  provider_id: vllm-inference
   model_type: llm
 - metadata:
     embedding_dimension: 384
@@ -111,7 +107,7 @@ shields: []
 vector_dbs: []
 datasets: []
 scoring_fns: []
-benchmarks: []
+eval_tasks: []
 tool_groups:
 - toolgroup_id: builtin::websearch
   provider_id: tavily-search
