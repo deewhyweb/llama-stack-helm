@@ -1,7 +1,7 @@
 yamlConfig: "/config/run.yaml"
 
 vllm:
-  url: "https://llama-3-1-8b-instruct-maas-apicast-production.apps.prod.rhoai.rh-aiservices-bu.com:443/v1"
+  url: ""
   inferenceModel: "meta-llama/Llama-3.1-8B-Instruct"
   apiKey: 
   # This is the API key for the VLLM server. It can be set in two ways through a secret:
@@ -10,7 +10,7 @@ vllm:
   #   name: vllm-secret
   #   key: vll
   # or directly with an api key (should be avoided in production)
-  apiKey: "2b24a13694a14f31290680bc1e7b962d"
+  apiKey: ""
 
 replicaCount: 1
 
