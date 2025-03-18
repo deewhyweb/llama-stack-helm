@@ -1,11 +1,22 @@
 Helm chart to install Llama-stack and an MCP server on OpenShift
 
+This helm chart deploys the following components:
+
+* A postgresql database containing customer orders
+* An MCP Server written in node.js providing functions to read and update the customer orders database
+* A Llama-stack server using the docker.io/llamastack/distribution-remote-vllm image
+* A chat-ui written in python and streamlit using the llama-stack-client python sdk
+
+Once these components are deployed in OpenShift you should see:
+
+![openshift](./assets/openshift.png)
+
 ## Pre-requsuites
 
 * OpenShift cluster 
 * Helm CLI
 * OpenShift CLI
-* Access to a running LLM e.g. llama32-3b
+* Access to a running LLM.  Tested with lama32-3b
 * llama-stack-client CLI (optional)
 
 ## Installation

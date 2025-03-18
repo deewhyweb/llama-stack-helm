@@ -2,7 +2,7 @@ yamlConfig: "/config/run.yaml"
 
 vllm:
   url: 
-  inferenceModel: "llama32-3b"
+  inferenceModel:
   apiKey: 
 replicaCount: 1
 
