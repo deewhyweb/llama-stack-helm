@@ -23,12 +23,13 @@ Set environment variables for LLM connection
 ```
 export LLM_URL=???
 export LLM_TOKEN=???
+export LLM_MODEL=llama32-3b
 ```
 
 Run the helm chart with the helm CLI
 
 ```
-helm install llama-stack ./llama-stack --set "vllm.url=$LLM_URL/v1,vllm.apiKey=$LLM_$TOKEN"
+helm install llama-stack ./llama-stack --set "vllm.url=$LLM_URL/v1,vllm.apiKey=$LLM_$TOKEN,vllm.inferenceModel=$LLM_MODEL"
 ```
 
 ## Llama-stack configuration
