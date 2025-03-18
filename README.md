@@ -86,6 +86,15 @@ You should see:
 └───────────────────────────┴─────────────┴───────────────────────────┴────────────────────────────┴────────────────────────┴──────────────────────┴────────────────────────┴─────────────────────┴──────┘
 ```
 
+## Test the chat-app
+
+Open the chat-ui in your browser (find the route with `oc get route llama-stack-chatui`)
+
+From the chat-ui, you should be able to interact with the order-service via Llama-stack and MCP
+
+![chat-ui](./assets/chat-ui.png)
+
+
 ## Clean up
 
 To uninstall the helm chart, run:
