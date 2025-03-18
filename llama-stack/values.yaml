@@ -1,23 +1,15 @@
 yamlConfig: "/config/run.yaml"
 
 vllm:
-  url: ""
-  inferenceModel: "meta-llama/Llama-3.1-8B-Instruct"
+  url: 
+  inferenceModel: "llama32-3b"
   apiKey: 
-  # This is the API key for the VLLM server. It can be set in two ways through a secret:
-  # TODO: Implement this
-  # secret:
-  #   name: vllm-secret
-  #   key: vll
-  # or directly with an api key (should be avoided in production)
-  apiKey: ""
-
 replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: quay.io/jland/distribution-remote-vllm
-  tag: latest
+  repository: docker.io/llamastack/distribution-remote-vllm
+  tag: 0.1.7
   # This sets the pull policy for images.
   pullPolicy: Always
 
@@ -73,13 +65,12 @@ startupProbe:
   periodSeconds: 10
   failureThreshold: 30
 
-playground:
-  enabled: false
-  backend:
-    url: "https://llama-stack-llama-stack.apps.rhsaia.vg6c.p1.openshiftapps.com"
+chatui:
+  llama-stack:
+    url: http://llama-stack:5001
   replicaCount: 1
   image:
-    repository: quay.io/jland/llama-stack-playground
+    repository: quay.io/hayesphilip/mcp-chat-ui
     tag: latest
     # This sets the pull policy for images.
     pullPolicy: Always
@@ -125,7 +116,7 @@ mcp:
   replicaCount: 1
   image:
     repository: quay.io/hayesphilip/mcp-weather
-    tag: latest
+    tag: 0.4.0
     # This sets the pull policy for images.
     pullPolicy: Always
 
@@ -157,3 +148,8 @@ mcp:
     initialDelaySeconds: 5
     periodSeconds: 2
     failureThreshold: 16
+postgresql:
+  image: postgres:15
+  username: claimdb
+  password: claimdb
+  database: claimdb

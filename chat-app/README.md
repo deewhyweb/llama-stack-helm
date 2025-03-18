@@ -1,0 +1,1 @@
+podman build -t quay.io/hayesphilip/mcp-chat-ui:latest .

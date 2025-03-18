@@ -2,3 +2,6 @@
 NOTEPAD.md
 
 **/local-values.yaml
+.DS_Store
+node_modules
+__pycache__

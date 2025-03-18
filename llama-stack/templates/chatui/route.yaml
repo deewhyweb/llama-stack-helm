@@ -1,10 +1,9 @@
-{{- if .Values.playground.enabled }}
-{{- with .Values.playground }}
+{{- with .Values.chatui }}
 {{- if .route.enabled -}}
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ include "llama-stack-playground.fullname" $ }}
+  name: {{ include "llama-stack-chatui.fullname" $ }}
   {{- with .route.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -18,16 +17,15 @@ spec:
   {{- end }}
   to:
     kind: Service
-    name: {{ include "llama-stack-playground.fullname" $ }}
+    name: {{ include "llama-stack-chatui.fullname" $ }}
     weight: 100
   port:
-    targetPort: llama-stack-playground
+    targetPort: llama-stack-chatui
   {{- if .route.tls.enabled }}
   tls:
     termination: {{ .route.tls.termination }}
     insecureEdgeTerminationPolicy: {{ .route.tls.insecureEdgeTerminationPolicy }}
   {{- end }}
   wildcardPolicy: None
-{{- end }}
 {{- end }}
 {{- end }}

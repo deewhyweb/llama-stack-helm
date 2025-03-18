@@ -30,6 +30,15 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .resources | nindent 12 }}
+          env:
+            - name: DB_USER
+              value: claimdb
+            - name: DB_PASSWORD
+              value: claimdb
+            - name: DB_HOST
+              value: postgresql
+            - name: DB_NAME
+              value: claimdb
       {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
