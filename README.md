@@ -5,7 +5,7 @@ Helm chart to install Llama-stack and an MCP server on OpenShift
 * OpenShift cluster 
 * Helm CLI
 * OpenShift CLI
-* Access to a running LLM e.g. Llama-3.1-8B-Instruct
+* Access to a running LLM e.g. llama32-3b
 * llama-stack-client CLI (optional)
 
 ## Installation
