@@ -70,27 +70,6 @@ podman run \
   --env OLLAMA_URL=http://host.docker.internal:11434
 ```
 
-### Running with vLLM
-
-To run with vLLM, first set the required environment variable:
-
-```sh
-export VLLM_URL=
-```
-
-Then execute the following command:
-
-```sh
-podman run -it -p 8321:8321 \
-  -v /Users/phayes/projects/mcp-on-llama-stack/run-vllm.yaml:/root/my-run.yaml \
-  llamastack/distribution-remote-vllm:latest \
-  --yaml-config /root/my-run.yaml \
-  --port 8321 \
-  --env INFERENCE_MODEL=$INFERENCE_MODEL \
-  --env VLLM_API_TOKEN=$VLLM_API_TOKEN \
-  --env VLLM_URL=$VLLM_URL
-```
-
 ## Register the Tool
 
 Export the required port:
