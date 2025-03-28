@@ -1,3 +1,8 @@
+Running the Stack Locally
+
+To run this stack locally: [link](local.md)
+
+## OpenShift Installation
 Helm chart to install Llama-stack and an MCP server on OpenShift
 
 This helm chart deploys the following components:
@@ -16,7 +21,7 @@ Once these components are deployed in OpenShift you should see:
 * OpenShift cluster 
 * Helm CLI
 * OpenShift CLI
-* Access to a running LLM.  Tested with lama32-3b
+* Access to a running LLM.  Tested with llama32-3b
 * llama-stack-client CLI (optional)
 
 ## Installation

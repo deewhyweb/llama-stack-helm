@@ -4,7 +4,7 @@ from llama_stack_client.lib.agents.agent import Agent
 from llama_stack_client.types.agent_create_params import AgentConfig
 import os
 base_url = os.getenv("BASE_URL", "http://host.containers.internal:8321") 
-
+model = os.getenv("INFERENCE_MODEL", "llama32-3b") 
 # Initialize LlamaStack client
 client = LlamaStackClient(
     base_url=base_url,
@@ -30,7 +30,7 @@ prompt = st.chat_input("Ask something...")
 if prompt:
     full_response = ""
     agent_config = AgentConfig(
-        model="llama32-3b",
+        model=model,
         instructions="You are a helpful customer service assistant, answer the following query relating to customer orders.",
         sampling_params={
             "strategy": {"type": "top_p", "temperature": 1.0, "top_p": 0.9},
