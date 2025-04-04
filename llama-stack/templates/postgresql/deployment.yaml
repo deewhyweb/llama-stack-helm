@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+        - resources:
+            limits:
+              memory: 512Mi
+          readinessProbe:
+            exec:
+              command:
+              - pg_isready
+              - -U
+              - {{ .Values.postgresql.username }}
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: postgresql
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.username }}
+          securityContext:
+            capabilities: {}
+            privileged: false
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: postgresql-data
+              mountPath: /var/lib/postgresql
+            - name: init-sql
+              mountPath: /docker-entrypoint-initdb.d
+          terminationMessagePolicy: File
+          image: 'postgres'
+          livenessProbe:
+            exec:
+              command:
+              - pg_isready
+              - -U
+              - {{ .Values.postgresql.username }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      volumes:
+        - name: init-sql
+          configMap:
+            name: postgres-import
+        - name: postgresql-data
+          emptyDir: {}

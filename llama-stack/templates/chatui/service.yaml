@@ -1,0 +1,15 @@
+{{- with .Values.chatui }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "llama-stack-chatui.fullname" $ }}
+spec:
+  type: {{ .service.type }}
+  ports:
+    - port: {{ .service.port }}
+      targetPort: http
+      protocol: TCP
+      name: llama-stack-chatui
+  selector:
+    {{- include "llama-stack-chatui.selectorLabels" $ | nindent 4 }}
+{{- end }}

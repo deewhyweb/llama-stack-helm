@@ -1,22 +1,15 @@
 yamlConfig: "/config/run.yaml"
 
 vllm:
-  url: "http://vllm-server"
-  inferenceModel: "llama2-7b-chat"
-  # This is the API key for the VLLM server. It can be set in two ways through a secret:
-  # TODO: Implement this
-  # secret:
-  #   name: vllm-secret
-  #   key: vll
-  # or directly with an api key (should be avoided in production)
-  # apiKey: "xxxxxxxxxxxx"
-
+  url: 
+  inferenceModel:
+  apiKey: 
 replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: quay.io/jland/distribution-remote-vllm
-  tag: latest
+  repository: docker.io/llamastack/distribution-remote-vllm
+  tag: 0.1.7
   # This sets the pull policy for images.
   pullPolicy: Always
 
@@ -72,13 +65,12 @@ startupProbe:
   periodSeconds: 10
   failureThreshold: 30
 
-playground:
-  enabled: true
-  backend:
-    url: "https://llama-stack-llama-stack.apps.rhsaia.vg6c.p1.openshiftapps.com"
+chatui:
+  llama-stack:
+    url: http://llama-stack:5001
   replicaCount: 1
   image:
-    repository: quay.io/jland/llama-stack-playground
+    repository: quay.io/hayesphilip/mcp-chat-ui
     tag: latest
     # This sets the pull policy for images.
     pullPolicy: Always
@@ -119,3 +111,45 @@ playground:
     initialDelaySeconds: 5
     periodSeconds: 2
     failureThreshold: 16
+
+mcp:
+  replicaCount: 1
+  image:
+    repository: quay.io/hayesphilip/mcp-weather
+    tag: 0.4.0
+    # This sets the pull policy for images.
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 500Mi
+
+  # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 8000
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 8000
+  startupProbe:
+    httpGet:
+      path: /
+      port: 8000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    failureThreshold: 16
+postgresql:
+  image: postgres:15
+  username: claimdb
+  password: claimdb
+  database: claimdb
