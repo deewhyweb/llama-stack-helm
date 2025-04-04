@@ -153,3 +153,56 @@ postgresql:
   username: claimdb
   password: claimdb
   database: claimdb
+
+
+playground:
+  enabled: true
+  backend: {}
+  #   url: "https://my-llama-stack.openshiftapps.com"
+  replicaCount: 1
+  image:
+    repository: quay.io/jland/llama-stack-playground
+    tag: latest
+    # This sets the pull policy for images.
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 8501
+
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    annotations: {}
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 500Mi
+
+  # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 8501
+    periodSeconds: 60 # Making this 60 seconds cause it logs every time you hit the /health endpoint
+    failureThreshold: 2
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 8501
+    periodSeconds: 60
+    failureThreshold: 2
+  startupProbe:
+    httpGet:
+      path: /
+      port: 8501
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    failureThreshold: 16
