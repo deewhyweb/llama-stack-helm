@@ -31,6 +31,8 @@ spec:
           env:
             - name: BASE_URL
               value: http://llama-stack:5001
+            - name: INFERENCE_MODEL
+              value: {{ $.Values.vllm.inferenceModel }}
           livenessProbe:
             {{- tpl (toYaml .livenessProbe) $ | nindent 12 }}
           readinessProbe:
