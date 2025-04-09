@@ -1,18 +1,19 @@
-{{- with .Values.chatui }}
+{{- if .Values.playground.enabled }}
+{{- with .Values.playground }}
 # TODO: In the future this should probably be its own chart
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "llama-stack-chatui.fullname" $ }}
+  name: {{ include "llama-stack-playground.fullname" $ }}
 spec:
   replicas: {{ .replicaCount }}
   selector:
     matchLabels:
-      {{- include "llama-stack-chatui.selectorLabels" $ | nindent 6 }}
+      {{- include "llama-stack-playground.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "llama-stack-chatui.selectorLabels" $ | nindent 8 }}
+        {{- include "llama-stack-playground.selectorLabels" $ | nindent 8 }}
     spec:
       {{- with .imagePullSecrets }}
       imagePullSecrets:
@@ -29,10 +30,8 @@ spec:
               containerPort: {{ .service.port }}
               protocol: TCP
           env:
-            - name: BASE_URL
-              value: http://llama-stack:5001
-            - name: INFERENCE_MODEL
-              value: {{ $.Values.vllm.inferenceModel }}
+            - name: LLAMA_STACK_ENDPOINT
+              value: {{ .backend.url | default "http://llama-stack:5001" }}
           livenessProbe:
             {{- tpl (toYaml .livenessProbe) $ | nindent 12 }}
           readinessProbe:
@@ -53,4 +52,5 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}
 {{- end }}
