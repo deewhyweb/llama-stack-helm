@@ -1,2 +1,2 @@
 streamlit
-llama-stack-client
+llama-stack-client==0.1.7

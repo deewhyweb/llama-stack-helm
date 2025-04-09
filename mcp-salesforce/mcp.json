@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "salesforce": {
+        "command": "uvx",
+        "args": [
+            "--from",
+            "mcp-salesforce-connector",
+            "salesforce"
+        ]
+        }
+    }
+}

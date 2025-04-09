@@ -46,7 +46,7 @@ Execute the following command to start the Ollama model:
 ollama run llama3.1:8b-instruct-fp16
 ```
 
-## Run Llama-Stack
+## Run Llama-Stack (ollama)
 
 Set up the environment variables:
 

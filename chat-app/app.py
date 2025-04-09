@@ -2,14 +2,15 @@ import streamlit as st
 from llama_stack_client import LlamaStackClient
 from llama_stack_client.lib.agents.agent import Agent
 from llama_stack_client.types.agent_create_params import AgentConfig
+from utils import check_model_is_available, get_any_available_model
 import os
 base_url = os.getenv("BASE_URL", "http://host.containers.internal:8321") 
-model = os.getenv("INFERENCE_MODEL", "llama32-3b") 
+
 # Initialize LlamaStack client
 client = LlamaStackClient(
     base_url=base_url,
 )
-
+model = get_any_available_model(client)
 
 
 # Streamlit UI
