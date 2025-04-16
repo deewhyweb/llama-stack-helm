@@ -63,12 +63,26 @@ podman run \
   -v ./llama-stack/files/run-ollama.yaml:/root/my-run.yaml \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   -v ~/.llama:/root/.llama \
-  llamastack/distribution-ollama:0.1.8 \
+  llamastack/distribution-ollama:0.2.0 \
   --port $LLAMA_STACK_PORT \
   --yaml-config /root/my-run.yaml \
   --env INFERENCE_MODEL=$INFERENCE_MODEL \
   --env OLLAMA_URL=http://host.docker.internal:11434
 ```
+
+
+### Or tun run with vllm
+
+podman run \
+  -it \
+  -v ./llama-stack/files/run-vllm.yaml:/root/my-run.yaml \
+  -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
+  docker.io/llamastack/distribution-remote-vllm:0.2.1 \
+  --port $LLAMA_STACK_PORT \
+  --yaml-config /root/my-run.yaml \
+  --env INFERENCE_MODEL=$INFERENCE_MODEL \
+  --env VLLM_URL=http://host.containers.internal:8001/v1
+  
 
 ## Register the Tool
 

@@ -45,7 +45,7 @@ export LLM_MODEL=llama32-3b
 Run the helm chart with the helm CLI
 
 ```
-helm install llama-stack ./llama-stack --set "vllm.url=$LLM_URL/v1,vllm.apiKey=$LLM_$TOKEN,vllm.inferenceModel=$LLM_MODEL"
+helm install llama-stack ./llama-stack --set "vllm.url=$LLM_URL/v1,vllm.apiKey=$LLM_TOKEN,vllm.inferenceModel=$LLM_MODEL"
 ```
 
 ## Llama-stack configuration
@@ -119,3 +119,8 @@ To uninstall the helm chart, run:
 helm uninstall llama-stack
 ```
 
+
+ curl -X POST -H "Content-Type: application/json" \
+--data \
+'{ "provider_id" : "model-context-protocol", "toolgroup_id" : "mcp::orders-service", "mcp_endpoint" : { "uri" : "http://localhost:8000/sse"}}' \
+ http://localhost:8321/v1/toolgroups 

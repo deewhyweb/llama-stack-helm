@@ -1,1 +1,1 @@
-podman build -t quay.io/hayesphilip/mcp-chat-ui:latest .
+podman build -t quay.io/hayesphilip/mcp-chat-ui:latest --platform linux/amd64 .

@@ -43,10 +43,8 @@ spec:
           env:
             - name: VLLM_URL
               value: {{ .Values.vllm.url | quote }}
-            {{- if .Values.vllm.apiKey }}
             - name: VLLM_API_TOKEN
               value: {{ .Values.vllm.apiKey | quote }}
-            {{- end }}
             - name: INFERENCE_MODEL
               value: {{ .Values.vllm.inferenceModel | quote }}
             - name: LLAMA_STACK_PORT

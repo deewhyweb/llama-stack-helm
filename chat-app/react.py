@@ -33,29 +33,29 @@ def main(model_id: str | None = None):
     agent = ReActAgent(
         client=client,
         model=model_id,
-        tools=["mcp::orders-service"]
+        tools=["builtin::code_interpreter"]
     )
 
     session_id = agent.create_session(f"test-sessionxxx-{uuid.uuid4().hex}")
-    user_prompt = "Check the status of order ORD1001"
-    print(colored(f"User> {user_prompt}", "blue"))
-    response = agent.create_turn(
-        messages=[{"role": "user", "content": user_prompt}],
-        session_id=session_id,
-        stream=True,
-    )
-    for log in EventLogger().log(response):
-        log.print()
-
-    # user_prompt2 = "Retrieve order details for order ORD1001"
-    # print(colored(f"User> {user_prompt2}", "blue"))
-    # response2 = agent.create_turn(
-    #     messages=[{"role": "user", "content": user_prompt2}],
+    # user_prompt = "Check the details of order ORD1001"
+    # print(colored(f"User> {user_prompt}", "blue"))
+    # response = agent.create_turn(
+    #     messages=[{"role": "user", "content": user_prompt}],
     #     session_id=session_id,
     #     stream=True,
     # )
-    # for log in EventLogger().log(response2):
+    # for log in EventLogger().log(response):
     #     log.print()
+
+    user_prompt2 = "Write some code to find out how many letter r there are in strawberry"
+    print(colored(f"User> {user_prompt2}", "blue"))
+    response2 = agent.create_turn(
+        messages=[{"role": "user", "content": user_prompt2}],
+        session_id=session_id,
+        stream=True,
+    )
+    for log in EventLogger().log(response2):
+        log.print()
 
 
 if __name__ == "__main__":
